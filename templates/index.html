@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>IMG Rewards Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-image: url("{{ url_for('static', filename='high_quality_rabbit_dots_bg.png') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            background-color: #0d0d0d;
             font-family: monospace;
             color: #ffffff;
         }
 
         h1 {
             text-align: center;
-            padding-top: 40px;
+            padding-top: 20px;
             font-size: 20px;
             letter-spacing: 1px;
         }
 
         .calculator-frame {
-            border: 4px solid white;
-            padding: 30px;
-            margin: 40px auto;
+            padding: 20px;
+            margin: 20px auto;
             width: 90%;
-            max-width: 320px;
-            background-color: rgba(0, 0, 0, 0.85);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            max-width: 420px;
+            background-color: #1a1a1a;
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
         }
 
         label {
@@ -40,21 +39,24 @@
 
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 15px;
             background-color: #111;
             border: 1px solid #444;
             color: white;
+            font-size: 16px;
+            border-radius: 4px;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px 16px;
             background-color: #111;
             color: white;
             border: 2px solid white;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            margin-bottom: 10px;
         }
 
         button:hover {
@@ -67,7 +69,7 @@
 
         .block {
             border-bottom: 1px solid #444;
-            padding: 5px 0;
+            padding: 6px 0;
         }
 
         .row {
@@ -96,6 +98,16 @@
             color: #aaa;
             margin-top: 20px;
         }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 18px;
+            }
+            .calculator-frame {
+                width: 95%;
+                padding: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -115,53 +127,13 @@
 
         {% if volume %}
         <div class="output">
-            <div class="block">
-                <div class="row">
-                    <div class="label">Rewards Pool (90%):</div>
-                    <div class="value">${{ daily_pool }}</div>
-                </div>
-            </div>
-
-            <div class="block">
-                <div class="row">
-                    <div class="label">InfraWallet (10%):</div>
-                    <div class="value">${{ infra_wallet }}</div>
-                </div>
-            </div>
-
-            <div class="block">
-                <div class="row">
-                    <div class="label">Your Daily Earnings:</div>
-                    <div class="value">${{ daily_earnings }}</div>
-                </div>
-                <div class="sol-value">{{ daily_sol }} SOL</div>
-            </div>
-
-            <div class="block">
-                <div class="row">
-                    <div class="label">Monthly Projection:</div>
-                    <div class="value">${{ monthly_projection }}</div>
-                </div>
-                <div class="sol-value">{{ monthly_sol }} SOL</div>
-            </div>
-
-            <div class="block">
-                <div class="row">
-                    <div class="label">Annual Projection:</div>
-                    <div class="value">${{ annual_projection }}</div>
-                </div>
-                <div class="sol-value">{{ annual_sol }} SOL</div>
-            </div>
-
-            <div class="block">
-                <div class="row">
-                    <div class="label">Total IMG Supply:</div>
-                    <div class="value">{{ total_supply }}</div>
-                </div>
-            </div>
-
-            <p class="small-text">* Calculations are based on live CoinGecko data — SOL: ${{ sol_price }}. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank">InfraWallet</a> funds are used for project marketing and growth initiatives.</p>
-
+            <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ daily_pool }}</div></div></div>
+            <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ infra_wallet }}</div></div></div>
+            <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ daily_earnings }}</div></div><div class="sol-value">{{ daily_sol }} SOL</div></div>
+            <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ monthly_projection }}</div></div><div class="sol-value">{{ monthly_sol }} SOL</div></div>
+            <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ annual_projection }}</div></div><div class="sol-value">{{ annual_sol }} SOL</div></div>
+            <div class="block"><div class="row"><div class="label">Total IMG Supply:</div><div class="value">{{ total_supply }}</div></div></div>
+            <p class="small-text">* Live data from CoinGecko — SOL: ${{ sol_price }}. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank">InfraWallet</a> is used for project growth.</p>
         </div>
         {% endif %}
     </div>
@@ -173,6 +145,5 @@ function resetForm() {
     document.getElementById("reward-form").submit();
 }
 </script>
-
 </body>
 </html>
