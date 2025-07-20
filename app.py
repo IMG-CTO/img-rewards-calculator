@@ -27,31 +27,43 @@ def get_sol_price():
 
 @app.route("/", methods=["GET", "POST"])
 def calculator():
-    daily_earnings = monthly_projection = daily_pool = solana_per_usd = 0
-    img_holdings = volume = total_supply = 0
+    # Default values (used both for GET and fallback)
+    volume = 100_000
+    img_holdings = 1_000_000
 
+    # Override if POST values provided
     if request.method == "POST":
-        volume = float(request.form["volume"])
-        img_holdings = float(request.form["img_holdings"])
+        volume = float(request.form.get("volume", volume))
+        img_holdings = float(request.form.get("img_holdings", img_holdings))
 
-        total_supply = get_img_total_supply()
-        sol_price = get_sol_price()
+    # Shared logic for GET or POST
+    total_supply = get_img_total_supply()
+    sol_price = get_sol_price()
+    solana_per_usd = 1 / sol_price
 
-        daily_pool = 0.05 * volume
-        user_share = img_holdings / total_supply
-        daily_earnings = user_share * daily_pool
-        monthly_projection = daily_earnings * 30
-        solana_per_usd = 1 / sol_price
+    gross_pool = 0.05 * volume
+    infra_wallet = 0.10 * gross_pool
+    daily_rewards_pool = gross_pool - infra_wallet
 
-        return render_template("index.html",
-                               volume=volume,
-                               img_holdings=img_holdings,
-                               daily_pool=round(daily_pool, 2),
-                               daily_earnings=round(daily_earnings, 2),
-                               sol_earned=round(daily_earnings * solana_per_usd, 6),
-                               monthly_projection=round(monthly_projection, 2),
-                               monthly_sol=round(monthly_projection * solana_per_usd, 6),
-                               sol_price=round(sol_price, 2),
-                               total_supply="{:,.0f}".format(total_supply))
+    user_share = img_holdings / total_supply
+    daily_earnings = user_share * daily_rewards_pool
+    monthly_projection = daily_earnings * 30
+    annual_projection = daily_earnings * 365
 
-    return render_template("index.html", total_supply="Fetching...", sol_price="Fetching...")
+    return render_template("index.html",
+                           volume=volume,
+                           img_holdings=img_holdings,
+                           daily_pool=f"{daily_rewards_pool:.2f}",
+                           infra_wallet=f"{infra_wallet:.2f}",
+                           daily_earnings=f"{daily_earnings:.2f}",
+                           daily_sol=f"{daily_earnings * solana_per_usd:.6f}",
+                           monthly_projection=f"{monthly_projection:.2f}",
+                           monthly_sol=f"{monthly_projection * solana_per_usd:.6f}",
+                           annual_projection=f"{annual_projection:.2f}",
+                           annual_sol=f"{annual_projection * solana_per_usd:.6f}",
+                           sol_price=f"{sol_price:.2f}",
+                           total_supply="{:,.0f}".format(total_supply))
+
+if __name__ == "__main__":
+    app.run(debug=False, host="0.0.0.0")
+
