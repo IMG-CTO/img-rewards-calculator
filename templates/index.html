@@ -1,149 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>IMG Rewards Calculator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0d0d0d;
-            font-family: monospace;
-            color: #ffffff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMG Rewards Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        h1 {
-            text-align: center;
-            padding-top: 20px;
-            font-size: 20px;
-            letter-spacing: 1px;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      font-family: monospace;
+      color: #ffffff;
+    }
 
-        .calculator-frame {
-            padding: 20px;
-            margin: 20px auto;
-            width: 90%;
-            max-width: 420px;
-            background-color: #1a1a1a;
-            border: 2px solid #fff;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-        }
+    h1 {
+      text-align: center;
+      padding-top: 20px;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
+    .calculator-frame {
+      background-color: #1a1a1a;
+      border: 2px solid white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 420px;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #111;
-            border: 1px solid #444;
-            color: white;
-            font-size: 16px;
-            border-radius: 4px;
-        }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
 
-        button {
-            padding: 10px 16px;
-            background-color: #111;
-            color: white;
-            border: 2px solid white;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-bottom: 10px;
-        }
+    input {
+      width: 100%;
+      padding: 10px;
+      background-color: #111;
+      border: 1px solid #444;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
 
-        button:hover {
-            background-color: #222;
-        }
+    button {
+      padding: 10px;
+      width: 100%;
+      background-color: #111;
+      color: white;
+      border: 2px solid white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
 
-        .output {
-            margin-top: 25px;
-        }
+    button:hover {
+      background-color: #222;
+    }
 
-        .block {
-            border-bottom: 1px solid #444;
-            padding: 6px 0;
-        }
+    .output {
+      margin-top: 25px;
+    }
 
-        .row {
-            display: flex;
-            justify-content: space-between;
-        }
+    .block {
+      border-bottom: 1px solid #444;
+      padding: 6px 0;
+    }
 
-        .label {
-            font-size: 14px;
-        }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .value {
-            font-size: 14px;
-            font-weight: bold;
-        }
+    .label {
+      font-size: 14px;
+    }
 
-        .sol-value {
-            text-align: right;
-            color: #aaa;
-            font-weight: normal;
-            font-size: 13px;
-        }
+    .value {
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-        .small-text {
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 20px;
-        }
+    .sol-value {
+      text-align: right;
+      color: #aaa;
+      font-weight: normal;
+      font-size: 13px;
+    }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 18px;
-            }
-            .calculator-frame {
-                width: 95%;
-                padding: 16px;
-            }
-        }
-    </style>
+    .small-text {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>EXECUTING: IMG::REWARD_ENGINE [V2.0]</h1>
+  <h1>EXECUTING: IMG::REWARD_ENGINE [V2.0]</h1>
 
-    <div class="calculator-frame">
-        <form method="post" id="reward-form">
-            <label for="volume">24H Volume (USD)</label>
-            <input type="number" id="volume" name="volume" value="{{ volume|int }}">
+  <div class="calculator-frame">
+    <form method="post" id="reward-form">
+      <label for="volume">24H Volume (USD)</label>
+      <input type="number" id="volume" name="volume" value="{{ volume|int }}" />
 
-            <label for="img_holdings">Your $IMG Holdings</label>
-            <input type="number" id="img_holdings" name="img_holdings" value="{{ img_holdings|int }}">
+      <label for="img_holdings">Your $IMG Holdings</label>
+      <input type="number" id="img_holdings" name="img_holdings" value="{{ img_holdings|int }}" />
 
-            <button type="submit">CALCULATE</button>
-            <button type="button" onclick="resetForm()">RESET</button>
-        </form>
+      <button type="submit">CALCULATE</button>
+      <button type="button" onclick="resetForm()">RESET</button>
+    </form>
 
-        {% if volume %}
-        <div class="output">
-            <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ daily_pool }}</div></div></div>
-            <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ infra_wallet }}</div></div></div>
-            <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ daily_earnings }}</div></div><div class="sol-value">{{ daily_sol }} SOL</div></div>
-            <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ monthly_projection }}</div></div><div class="sol-value">{{ monthly_sol }} SOL</div></div>
-            <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ annual_projection }}</div></div><div class="sol-value">{{ annual_sol }} SOL</div></div>
-            <div class="block"><div class="row"><div class="label">Total IMG Supply:</div><div class="value">{{ total_supply }}</div></div></div>
-            <p class="small-text">* Live data from CoinGecko — SOL: ${{ sol_price }}. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank">InfraWallet</a> is used for project growth.</p>
-        </div>
-        {% endif %}
+    {% if volume %}
+    <div class="output">
+      <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ daily_pool }}</div></div></div>
+      <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ infra_wallet }}</div></div></div>
+      <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ daily_earnings }}</div></div><div class="sol-value">{{ daily_sol }} SOL</div></div>
+      <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ monthly_projection }}</div></div><div class="sol-value">{{ monthly_sol }} SOL</div></div>
+      <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ annual_projection }}</div></div><div class="sol-value">{{ annual_sol }} SOL</div></div>
+      <div class="block"><div class="row"><div class="label">Total IMG Supply:</div><div class="value">{{ total_supply }}</div></div></div>
+      <p class="small-text">
+  * Live data from CoinGecko — SOL: ${{ sol_price }}. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank" style="color: #39ff14;">InfraWallet</a> is used for project growth. </p>
+
     </div>
+    {% endif %}
+  </div>
 
-<script>
-function resetForm() {
-    document.getElementById("volume").value = 100000;
-    document.getElementById("img_holdings").value = 1000000;
-    document.getElementById("reward-form").submit();
-}
-</script>
+  <script>
+    function resetForm() {
+      document.getElementById("volume").value = 100000;
+      document.getElementById("img_holdings").value = 1000000;
+      document.getElementById("reward-form").submit();
+    }
+  </script>
 </body>
 </html>
