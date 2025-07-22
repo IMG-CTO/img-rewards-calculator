@@ -117,10 +117,10 @@
   <div class="calculator-frame">
     <form method="post" id="reward-form">
       <label for="volume">24H Volume (USD)</label>
-      <input type="number" id="volume" name="volume" value="{{ volume|int }}" />
+      <input type="text" id="volume" name="volume" value="{{ volume }}" oninput="formatNumber(this)" />
 
       <label for="img_holdings">Your $IMG Holdings</label>
-      <input type="number" id="img_holdings" name="img_holdings" value="{{ img_holdings|int }}" />
+      <input type="text" id="img_holdings" name="img_holdings" value="{{ img_holdings }}" oninput="formatNumber(this)" />
 
       <button type="submit">CALCULATE</button>
       <button type="button" onclick="resetForm()">RESET</button>
@@ -128,25 +128,44 @@
 
     {% if volume %}
     <div class="output">
-      <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ daily_pool }}</div></div></div>
-      <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ infra_wallet }}</div></div></div>
-      <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ daily_earnings }}</div></div><div class="sol-value">{{ daily_sol }} SOL</div></div>
-      <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ monthly_projection }}</div></div><div class="sol-value">{{ monthly_sol }} SOL</div></div>
-      <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ annual_projection }}</div></div><div class="sol-value">{{ annual_sol }} SOL</div></div>
+      <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ "{:,.2f}".format(daily_pool|float) }}</div></div></div>
+      <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ "{:,.2f}".format(infra_wallet|float) }}</div></div></div>
+      <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ "{:,.2f}".format(daily_earnings|float) }}</div></div><div class="sol-value">{{ daily_sol }}</div></div>
+      <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ "{:,.2f}".format(monthly_projection|float) }}</div></div><div class="sol-value">{{ monthly_sol }}</div></div>
+      <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ "{:,.2f}".format(annual_projection|float) }}</div></div><div class="sol-value">{{ annual_sol }}</div></div>
       <div class="block"><div class="row"><div class="label">Total IMG Supply:</div><div class="value">{{ total_supply }}</div></div></div>
-      <p class="small-text"> * Real-time data from CoinGecko — SOL: ${{ sol_price }}, IMG Circulating Supply: {{ total_supply }}. API response may experience brief latency. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank" style="color: #39ff14;">InfraWallet</a> allocations fund protocol marketing and ecosystem growth.
-      </p>
-
+      <p class="small-text">* Real-time data from CoinGecko — SOL: ${{ sol_price }}, IMG Circulating Supply: {{ total_supply }}. API response may experience brief latency. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank" style="color: #39ff14;">InfraWallet</a> allocations fund protocol marketing and ecosystem growth.</p>
     </div>
     {% endif %}
   </div>
 
   <script>
+    function formatNumber(input) {
+      let value = input.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      if (!isNaN(value) && value !== "") {
+        const parts = value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      formatNumber(document.getElementById("volume"));
+      formatNumber(document.getElementById("img_holdings"));
+    });
+
     function resetForm() {
-      document.getElementById("volume").value = 100000;
-      document.getElementById("img_holdings").value = 1000000;
+      document.getElementById("volume").value = "100,000";
+      document.getElementById("img_holdings").value = "1,000,000";
       document.getElementById("reward-form").submit();
     }
+
+    document.getElementById("reward-form").addEventListener("submit", function (e) {
+      const vol = document.getElementById("volume");
+      const img = document.getElementById("img_holdings");
+      vol.value = vol.value.replace(/,/g, '');
+      img.value = img.value.replace(/,/g, '');
+    });
   </script>
 </body>
 </html>
