@@ -34,6 +34,12 @@
       width: 90%;
       max-width: 420px;
     }
+    .value-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+    }
 
     label {
       display: block;
@@ -128,11 +134,38 @@
 
     {% if volume %}
     <div class="output">
-      <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ "{:,.2f}".format(daily_pool|float) }}</div></div></div>
-      <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ "{:,.2f}".format(infra_wallet|float) }}</div></div></div>
-      <div class="block"><div class="row"><div class="label">Your Daily Earnings:</div><div class="value">${{ "{:,.2f}".format(daily_earnings|float) }}</div></div><div class="sol-value">{{ daily_sol }}</div></div>
-      <div class="block"><div class="row"><div class="label">Monthly Projection:</div><div class="value">${{ "{:,.2f}".format(monthly_projection|float) }}</div></div><div class="sol-value">{{ monthly_sol }}</div></div>
-      <div class="block"><div class="row"><div class="label">Annual Projection:</div><div class="value">${{ "{:,.2f}".format(annual_projection|float) }}</div></div><div class="sol-value">{{ annual_sol }}</div></div>
+      <div class="block"><div class="row"><div class="label">Rewards Pool (90%):</div><div class="value">${{ daily_pool }}</div></div></div>
+      <div class="block"><div class="row"><div class="label">InfraWallet (10%):</div><div class="value">${{ infra_wallet }}</div></div></div>
+      <div class="block">
+        <div class="row">
+          <div class="label">Your Daily Earnings:</div>
+          <div class="value-stack">
+            <div class="value">${{ daily_earnings }}</div>
+            <div class="sol-value">{{ daily_sol }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="row">
+          <div class="label">Monthly Projection:</div>
+          <div class="value-stack">
+            <div class="value">${{ monthly_projection }}</div>
+            <div class="sol-value">{{ monthly_sol }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="row">
+          <div class="label">Annual Projection:</div>
+          <div class="value-stack">
+            <div class="value">${{ annual_projection }}</div>
+            <div class="sol-value">{{ annual_sol }}</div>
+          </div>
+        </div>
+      </div>
+
       <div class="block"><div class="row"><div class="label">Total IMG Supply:</div><div class="value">{{ total_supply }}</div></div></div>
       <p class="small-text">* Real-time data from CoinGecko — SOL: ${{ sol_price }}, IMG Circulating Supply: {{ total_supply }}. API response may experience brief latency. <a href="https://solscan.io/account/EUV8LVWg8FQSAtximJoQfiZKaaM9MAD4kHTqtHS36Mfx" target="_blank" style="color: #39ff14;">InfraWallet</a> allocations fund protocol marketing and ecosystem growth.</p>
     </div>
